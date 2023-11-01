@@ -1,8 +1,63 @@
 package org.example
 
-import spock.lang.Specification
+import org.example.config.SpringBatchTestConfig
+import org.example.data.SampleDataProvider
+import org.example.sample.enums.SampleType
+import org.example.sample.model.Sample
+import org.example.sample.step.SampleItemReader
+import org.spockframework.spring.SpringSpy
+import org.springframework.batch.core.BatchStatus
+import org.springframework.batch.core.JobExecution
+import org.springframework.batch.core.JobParametersBuilder
+import org.springframework.batch.test.JobLauncherTestUtils
+import org.springframework.batch.test.JobRepositoryTestUtils
+import org.springframework.beans.factory.annotation.Autowired
 
+class SampleJobSpec extends SpringBatchTestConfig {
 
-class SampleJobSpec extends Specification {
+  @Autowired
+  private JobLauncherTestUtils jobLauncherTestUtils
 
+  @Autowired
+  private JobRepositoryTestUtils jobRepositoryTestUtils
+
+  @Autowired
+  private SampleDataProvider dataProvider
+
+  @SpringSpy
+  private SampleItemReader reader
+
+  def setup(){
+    expect:
+    reader.read() >>> [new Sample(name: "test", type: SampleType.A), null]
+  }
+
+  def cleanup() {
+    //jobRepositoryTestUtils.removeJobExecutions()
+  }
+
+  def "whenJobExecuted thenSuccess"(){
+    //def test = Spy(SampleItemReader.class)
+    //reader << Spy(SampleItemReader.class)
+    //def criteria = new Sample(name: "Atest", type: SampleType.A)
+    //reader.read() >> criteria
+
+    def jobParameters = new JobParametersBuilder()
+        .addString("type", jobType.name())
+        .toJobParameters()
+
+    when:
+    JobExecution jobExecution = jobLauncherTestUtils.launchJob(jobParameters)
+
+    then:
+    jobExecution.status == BatchStatus.COMPLETED
+
+    and:
+    result == dataProvider.data.first().name
+
+    where:
+    jobType          | result
+    SampleType.A     | jobType.name()+"test"
+  }
 }
+
