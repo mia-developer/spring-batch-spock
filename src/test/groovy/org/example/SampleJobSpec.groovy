@@ -5,7 +5,9 @@ import org.example.data.SampleDataProvider
 import org.example.sample.enums.SampleType
 import org.example.sample.model.Sample
 import org.example.sample.step.SampleItemReader
+import org.spockframework.spring.SpringBean
 import org.spockframework.spring.SpringSpy
+import org.spockframework.spring.StubBeans
 import org.springframework.batch.core.BatchStatus
 import org.springframework.batch.core.JobExecution
 import org.springframework.batch.core.JobParametersBuilder
@@ -13,6 +15,7 @@ import org.springframework.batch.test.JobLauncherTestUtils
 import org.springframework.batch.test.JobRepositoryTestUtils
 import org.springframework.beans.factory.annotation.Autowired
 
+@StubBeans(SampleItemReader)
 class SampleJobSpec extends SpringBatchTestConfig {
 
   @Autowired
@@ -24,8 +27,8 @@ class SampleJobSpec extends SpringBatchTestConfig {
   @Autowired
   private SampleDataProvider dataProvider
 
-  @SpringSpy
-  private SampleItemReader reader
+  @SpringBean
+  private SampleItemReader reader = Stub()
 
   def setup(){
     expect:
@@ -37,11 +40,7 @@ class SampleJobSpec extends SpringBatchTestConfig {
   }
 
   def "whenJobExecuted thenSuccess"(){
-    //def test = Spy(SampleItemReader.class)
-    //reader << Spy(SampleItemReader.class)
-    //def criteria = new Sample(name: "Atest", type: SampleType.A)
-    //reader.read() >> criteria
-
+    given:
     def jobParameters = new JobParametersBuilder()
         .addString("type", jobType.name())
         .toJobParameters()
