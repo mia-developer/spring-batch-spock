@@ -27,15 +27,14 @@ class SampleJobSpec extends SpringBatchTestConfig {
   @SpringBean
   private SampleItemReader reader = Stub()
 
-  def setup(){
-    reader.read() >>> [new Sample(name: "test", type: SampleType.A), null]
-  }
-
   def cleanup() {
+    dataProvider.clean()
     jobRepositoryTestUtils.removeJobExecutions()
   }
 
   def "whenJobExecuted thenSuccess"(){
+    reader.read() >>> [new Sample(name: "test", type: jobType), null]
+
     given:
     def jobParameters = new JobParametersBuilder()
         .addString("type", jobType.name())
@@ -52,7 +51,9 @@ class SampleJobSpec extends SpringBatchTestConfig {
 
     where:
     jobType          | result
-    SampleType.A     | jobType.name()+"test"
+    SampleType.A     | "test-A"
+    SampleType.B     | "test-B"
+    SampleType.C     | "test-C"
   }
 }
 

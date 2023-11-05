@@ -14,7 +14,6 @@ import org.springframework.batch.core.repository.JobRepository;
 import org.springframework.batch.core.step.builder.StepBuilder;
 import org.springframework.batch.item.ItemProcessor;
 import org.springframework.batch.item.ItemWriter;
-import org.springframework.batch.item.database.JpaItemWriter;
 import org.springframework.batch.item.database.builder.JpaItemWriterBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -42,10 +41,14 @@ class SampleStepConfig {
   }
 
   private ItemProcessor<Sample, SampleEntity> processor(){
-    return v -> SampleEntity.builder()
-       .name(v.getType()+v.getName())
-       .type(v.getType())
-       .build();
+    return v -> {
+      log.info("processing... "+v);
+
+      return SampleEntity.builder()
+         .name(v.getName()+"-"+v.getType())
+         .type(v.getType())
+         .build();
+    };
   }
 
   private ItemWriter<SampleEntity> writer(){

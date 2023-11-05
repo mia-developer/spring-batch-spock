@@ -4,13 +4,14 @@ import static org.apache.commons.lang3.RandomStringUtils.randomAlphabetic;
 
 import java.util.Map;
 import java.util.Objects;
+import lombok.extern.slf4j.Slf4j;
 import org.example.sample.enums.SampleType;
-import org.example.sample.entity.SampleEntity;
 import org.example.sample.model.Sample;
 import org.springframework.batch.core.scope.context.StepSynchronizationManager;
 import org.springframework.batch.item.ItemReader;
 import org.springframework.stereotype.Component;
 
+@Slf4j
 @Component
 public class SampleItemReader implements ItemReader<Sample> {
 
