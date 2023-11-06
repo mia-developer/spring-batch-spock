@@ -4,11 +4,12 @@ import org.example.config.SpringBatchTestConfig
 import org.example.data.SampleDataProvider
 import org.example.sample.enums.SampleType
 import org.example.sample.model.Sample
-import org.example.sample.step.SampleItemReader
+
 import org.spockframework.spring.SpringBean
 import org.springframework.batch.core.BatchStatus
 import org.springframework.batch.core.JobExecution
 import org.springframework.batch.core.JobParametersBuilder
+import org.springframework.batch.item.support.ListItemReader
 import org.springframework.batch.test.JobLauncherTestUtils
 import org.springframework.batch.test.JobRepositoryTestUtils
 import org.springframework.beans.factory.annotation.Autowired
@@ -25,7 +26,7 @@ class SampleJobSpec extends SpringBatchTestConfig {
   private SampleDataProvider dataProvider
 
   @SpringBean
-  private SampleItemReader reader = Stub()
+  private ListItemReader<Sample> reader = Stub()
 
   def cleanup() {
     dataProvider.clean()
