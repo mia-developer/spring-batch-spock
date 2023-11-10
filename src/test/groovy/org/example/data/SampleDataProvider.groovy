@@ -1,7 +1,7 @@
 package org.example.data
 
-import org.example.sample.entity.SampleEntity
-import org.example.sample.repository.SampleRepository
+import org.example.sample.persistence.entity.SampleEntity
+import org.example.sample.persistence.repository.SampleRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 

@@ -5,7 +5,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
-import org.example.sample.enums.SampleType;
+import org.example.sample.model.enums.SampleType;
 
 @Getter
 @Builder

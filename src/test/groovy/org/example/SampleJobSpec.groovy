@@ -2,7 +2,7 @@ package org.example
 
 import org.example.config.SpringBatchTestConfig
 import org.example.data.SampleDataProvider
-import org.example.sample.enums.SampleType
+import org.example.sample.model.enums.SampleType
 import org.example.sample.model.Sample
 
 import org.spockframework.spring.SpringBean

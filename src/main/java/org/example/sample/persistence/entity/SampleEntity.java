@@ -1,4 +1,4 @@
-package org.example.sample.entity;
+package org.example.sample.persistence.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -10,7 +10,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.example.sample.enums.SampleType;
+import org.example.sample.model.enums.SampleType;
 
 @Builder
 @Getter

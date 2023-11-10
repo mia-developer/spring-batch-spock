@@ -1,6 +1,6 @@
-package org.example.sample.repository;
+package org.example.sample.persistence.repository;
 
-import org.example.sample.entity.SampleEntity;
+import org.example.sample.persistence.entity.SampleEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

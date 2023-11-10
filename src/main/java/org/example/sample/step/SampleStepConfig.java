@@ -4,21 +4,17 @@ import static org.apache.commons.lang3.RandomStringUtils.randomAlphabetic;
 
 import jakarta.persistence.EntityManagerFactory;
 import java.util.List;
-import java.util.Map;
-import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.example.sample.enums.SampleType;
+import org.example.sample.model.enums.SampleType;
 import org.example.sample.model.Sample;
-import org.example.sample.entity.SampleEntity;
-import org.example.sample.repository.SampleRepository;
+import org.example.sample.persistence.entity.SampleEntity;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.JobScope;
 import org.springframework.batch.core.configuration.annotation.StepScope;
 import org.springframework.batch.core.repository.JobRepository;
-import org.springframework.batch.core.scope.context.StepSynchronizationManager;
 import org.springframework.batch.core.step.builder.StepBuilder;
 import org.springframework.batch.item.ItemProcessor;
 import org.springframework.batch.item.ItemReader;
@@ -52,7 +48,7 @@ class SampleStepConfig {
 
   @Bean
   @StepScope
-  public ListItemReader<Sample> reader(@Value("#{jobParameters['type']}") String type){
+  public ItemReader<Sample> reader(@Value("#{jobParameters['type']}") String type){
     return new ListItemReader<>(this.randomList(SampleType.valueOf(String.valueOf(type))));
   }
 
