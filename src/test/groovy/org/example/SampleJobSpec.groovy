@@ -4,7 +4,7 @@ import org.example.config.SpringBatchTestConfig
 import org.example.data.SampleDataProvider
 import org.example.sample.model.enums.SampleType
 import org.example.sample.model.Sample
-
+import org.example.sample.persistence.entity.SampleEntity
 import org.spockframework.spring.SpringBean
 import org.springframework.batch.core.BatchStatus
 import org.springframework.batch.core.JobExecution
@@ -34,7 +34,7 @@ class SampleJobSpec extends SpringBatchTestConfig {
     jobRepositoryTestUtils.removeJobExecutions()
   }
 
-  @Unroll("The result of #jobType test is #name")
+  @Unroll
   def "whenJobExecuted thenSuccess"(){
     reader.read() >>> [new Sample(name: "test", type: jobType), null]
 
@@ -50,16 +50,23 @@ class SampleJobSpec extends SpringBatchTestConfig {
     jobExecution.status == BatchStatus.COMPLETED
 
     and:
-    def result = dataProvider.data.first()
-    name == result.name
-    type == result.type
+    with(dataProvider.data.first()){ actual ->  // grouping step result
+      def expected = this.createResult(jobType)
+      expected.name == actual.name
+      expected.type == actual.type
+    }
 
     where:
-    [jobType, name, type] << this.createResult()
+    jobType << [SampleType.A, SampleType.B] // job parameter
   }
 
-  def createResult(){
-    [[SampleType.A, "test-A", SampleType.A], [SampleType.B, "test-B", SampleType.B]]
+  def createResult(final SampleType type){
+    switch (type){
+      case SampleType.A:
+        return new SampleEntity(name: "test-A", type: SampleType.A)
+      case SampleType.B:
+        return new SampleEntity(name: "test-B", type: SampleType.B)
+    }
   }
 }
 
