@@ -13,6 +13,7 @@ import org.springframework.batch.item.support.ListItemReader
 import org.springframework.batch.test.JobLauncherTestUtils
 import org.springframework.batch.test.JobRepositoryTestUtils
 import org.springframework.beans.factory.annotation.Autowired
+import spock.lang.Unroll
 
 class SampleJobSpec extends SpringBatchTestConfig {
 
@@ -33,6 +34,7 @@ class SampleJobSpec extends SpringBatchTestConfig {
     jobRepositoryTestUtils.removeJobExecutions()
   }
 
+  @Unroll("The result of #jobType test is #name")
   def "whenJobExecuted thenSuccess"(){
     reader.read() >>> [new Sample(name: "test", type: jobType), null]
 
@@ -48,13 +50,15 @@ class SampleJobSpec extends SpringBatchTestConfig {
     jobExecution.status == BatchStatus.COMPLETED
 
     and:
-    result == dataProvider.data.first().name
+    def result = dataProvider.data.first()
+    name == result.name
+    type == result.type
 
     where:
-    jobType          | result
-    SampleType.A     | "test-A"
-    SampleType.B     | "test-B"
-    SampleType.C     | "test-C"
+    jobType          || name         | type
+    SampleType.A     || "test-A"     | SampleType.A
+    SampleType.B     || "test-B"     | SampleType.B
+    SampleType.C     || "test-C"     | SampleType.C
   }
 }
 
