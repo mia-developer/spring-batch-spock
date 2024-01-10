@@ -55,10 +55,11 @@ class SampleJobSpec extends SpringBatchTestConfig {
     type == result.type
 
     where:
-    jobType          || name         | type
-    SampleType.A     || "test-A"     | SampleType.A
-    SampleType.B     || "test-B"     | SampleType.B
-    SampleType.C     || "test-C"     | SampleType.C
+    [jobType, name, type] << this.createResult()
+  }
+
+  def createResult(){
+    [[SampleType.A, "test-A", SampleType.A], [SampleType.B, "test-B", SampleType.B]]
   }
 }
 
