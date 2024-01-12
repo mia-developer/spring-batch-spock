@@ -2,6 +2,7 @@ package org.example
 
 import org.example.config.SpringBatchTestConfig
 import org.example.data.SampleDataProvider
+import org.example.helper.SampleDataTestHelper
 import org.example.sample.model.enums.SampleType
 import org.example.sample.model.Sample
 import org.example.sample.persistence.entity.SampleEntity
@@ -51,22 +52,13 @@ class SampleJobSpec extends SpringBatchTestConfig {
 
     and:
     with(dataProvider.data.first()){ actual ->  // grouping step result
-      def expected = this.createResult(jobType)
+      def expected = SampleDataTestHelper.createResult(jobType)
       expected.name == actual.name
       expected.type == actual.type
     }
 
     where:
     jobType << [SampleType.A, SampleType.B] // job parameter
-  }
-
-  def createResult(final SampleType type){
-    switch (type){
-      case SampleType.A:
-        return new SampleEntity(name: "test-A", type: SampleType.A)
-      case SampleType.B:
-        return new SampleEntity(name: "test-B", type: SampleType.B)
-    }
   }
 }
 
