@@ -5,7 +5,6 @@ import org.example.data.SampleDataProvider
 import org.example.helper.SampleDataTestHelper
 import org.example.sample.model.enums.SampleType
 import org.example.sample.model.Sample
-import org.example.sample.persistence.entity.SampleEntity
 import org.spockframework.spring.SpringBean
 import org.springframework.batch.core.BatchStatus
 import org.springframework.batch.core.JobExecution
@@ -52,7 +51,7 @@ class SampleJobSpec extends SpringBatchTestConfig {
 
     and:
     with(dataProvider.data.first()){ actual ->  // grouping step result
-      def expected = SampleDataTestHelper.createResult(jobType)
+      def expected = SampleDataTestHelper.getResult(jobType)
       expected.name == actual.name
       expected.type == actual.type
     }

@@ -7,12 +7,19 @@ import spock.lang.Specification
 
 class SampleDataTestHelper {
 
-  static def createResult(final SampleType type){
+  static def getResult(final SampleType type){
     switch (type){
       case SampleType.A:
-        return new SampleEntity(name: "test-A", type: SampleType.A)
+        return createSampleEntity("test-A", type)
       case SampleType.B:
-        return new SampleEntity(name: "test-B", type: SampleType.B)
+        return createSampleEntity("test-B", type)
     }
+  }
+
+  static SampleEntity createSampleEntity(final String name, final SampleType type){
+    return SampleEntity.builder()
+      .name(name)
+      .type(type)
+      .build()
   }
 }
