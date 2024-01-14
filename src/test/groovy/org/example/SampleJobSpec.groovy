@@ -48,16 +48,17 @@ class SampleJobSpec extends SpringBatchTestConfig {
 
     then:
     jobExecution.status == BatchStatus.COMPLETED
+    jobExecution.stepExecutions.every(it -> it.status == BatchStatus.COMPLETED)
 
     and:
-    with(dataProvider.data.first()){ actual ->  // grouping step result
+    with(dataProvider.data.first()){ actual ->
       def expected = SampleDataTestHelper.getResult(jobType)
       expected.name == actual.name
       expected.type == actual.type
     }
 
     where:
-    jobType << [SampleType.A, SampleType.B] // job parameter
+    jobType << [SampleType.A, SampleType.B]
   }
 }
 
