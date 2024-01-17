@@ -7,14 +7,17 @@ import org.example.sample.model.enums.SampleType
 import org.example.sample.model.Sample
 import org.spockframework.spring.SpringBean
 import org.springframework.batch.core.BatchStatus
+import org.springframework.batch.core.Job
 import org.springframework.batch.core.JobExecution
 import org.springframework.batch.core.JobParametersBuilder
 import org.springframework.batch.item.support.ListItemReader
 import org.springframework.batch.test.JobLauncherTestUtils
 import org.springframework.batch.test.JobRepositoryTestUtils
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.test.context.TestPropertySource
 import spock.lang.Unroll
 
+@TestPropertySource(properties = "spring.batch.job.enabled=false")
 class SampleJobSpec extends SpringBatchTestConfig {
 
   @Autowired
@@ -22,6 +25,9 @@ class SampleJobSpec extends SpringBatchTestConfig {
 
   @Autowired
   private JobRepositoryTestUtils jobRepositoryTestUtils
+
+  @Autowired
+  private Job sampleJob
 
   @Autowired
   private SampleDataProvider dataProvider
@@ -44,6 +50,7 @@ class SampleJobSpec extends SpringBatchTestConfig {
         .toJobParameters()
 
     when:
+    jobLauncherTestUtils.setJob(sampleJob)
     JobExecution jobExecution = jobLauncherTestUtils.launchJob(jobParameters)
 
     then:
