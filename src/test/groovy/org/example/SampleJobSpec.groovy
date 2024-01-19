@@ -55,7 +55,11 @@ class SampleJobSpec extends SpringBatchTestConfig {
 
     then:
     jobExecution.status == BatchStatus.COMPLETED
-    jobExecution.stepExecutions.every(it -> it.status == BatchStatus.COMPLETED)
+    jobExecution.stepExecutions.every { it ->
+      it.status == BatchStatus.COMPLETED
+      it.readCount = 10
+      it.writeCount = 10
+    }
 
     and:
     with(dataProvider.data.first()){ actual ->

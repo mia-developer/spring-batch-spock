@@ -48,7 +48,7 @@ class SampleStepConfig {
 
   @Bean
   @StepScope
-  public ItemReader<Sample> reader(@Value("#{jobParameters['type']}") String type){
+  public ListItemReader<Sample> reader(@Value("#{jobParameters['type']}") String type){
     return new ListItemReader<>(this.randomList(SampleType.valueOf(String.valueOf(type))));
   }
 
