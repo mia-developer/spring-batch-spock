@@ -10,9 +10,9 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 @RequiredArgsConstructor
-public class TestJobConfig {
+public class MultipleSampleJobConfig {
 
-	public static final String JOB_NAME = "testStep";
+	public static final String JOB_NAME = "multipleSampleStep";
 
 	private final Step sampleStep;
 
